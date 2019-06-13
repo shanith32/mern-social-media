@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:YvR1SbE29xOOCvcW@cluster0-dobub.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://admin:YvR1SbE29xOOCvcW@cluster0-dobub.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "theJWTTokenSecret"
 }

@@ -1,19 +1,20 @@
-import mongoose from "mongoose";
-import config from "config";
-const db = config.get("mongoURI");
+import mongoose from 'mongoose'
+import config from 'config'
+const db = config.get('mongoURI')
 
 const connectDB = async () => {
   try {
     await mongoose.connect(db, {
-      useNewUrlParser: true
-    });
+      useNewUrlParser: true,
+      useCreateIndex: true
+    })
 
-    console.log("MongoDB Connnected...");
+    console.log('MongoDB Connected...')
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message)
     // Exit on failure
-    process.exit(1);
+    process.exit(1)
   }
-};
+}
 
-export default connectDB;
+export default connectDB
