@@ -13,12 +13,11 @@ passport.use(
       try {
         const user = await User.findOne({ email })
         if (!user) done(null, false)
-
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (err) done(err)
+        else {
+          const isMatch = await bcrypt.compare(password, user.password)
           if (!isMatch) done(null, false)
-          else done(null, user)
-        })
+          else done(null, user.id)
+        }
       } catch (err) {
         return done(err)
       }
@@ -26,8 +25,8 @@ passport.use(
   )
 )
 
-passport.serializeUser((user, done) => {
-  done(null, user.id)
+passport.serializeUser((userId, done) => {
+  done(null, userId)
 })
 
 passport.deserializeUser((id, done) => {
@@ -40,21 +39,32 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next()
   } else {
-    res.status(401).send('You are not Authenticated!')
+    res.status(401).send('Unauthorized')
   }
 }
 // Passport Ends
 
 // @route   GET api/auth
 // @desc    Test route
-// @access  Public
-router.get('/', ensureAuthenticated, (req, res) => res.send('Auth route'))
+// @access  Private
+router.get('/', ensureAuthenticated, (req, res) => res.send(req.user))
 
-// @route   POST api/auth/login
+// @route   POST api/auth
 // @desc    Login route
 // @access  Public
-router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.send(req.user)
+router.post('/', passport.authenticate('local'), (req, res) => {
+  res.send('Authorized')
+})
+
+// @route   POST api/auth/logout
+// @desc    Logout route
+// @access  Public
+router.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) res.status(422).send(err)
+    req.logout()
+    res.clearCookie('connect.sid').send('Logged out')
+  })
 })
 
 module.exports = router
