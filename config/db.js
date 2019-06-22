@@ -2,6 +2,9 @@ import mongoose from 'mongoose'
 import config from 'config'
 const db = config.get('mongoURI')
 
+// ES6 Promises
+mongoose.Promise = global.Promise
+
 const connectDB = async () => {
   try {
     await mongoose.connect(db, {
