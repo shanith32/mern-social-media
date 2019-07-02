@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 const LocalStrategy = require('passport-local').Strategy
 const router = express.Router()
 const User = require('../../models/User')
+const auth = require('../../middleware/passportAuth')
 
 // Passport Start
 passport.use(
@@ -35,19 +36,12 @@ passport.deserializeUser((id, done) => {
   })
 })
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  } else {
-    res.status(401).send('Unauthorized')
-  }
-}
 // Passport Ends
 
 // @route   GET api/auth
 // @desc    Test route
 // @access  Private
-router.get('/', ensureAuthenticated, (req, res) => res.send(req.user))
+router.get('/', auth, (req, res) => res.send(req.user))
 
 // @route   POST api/auth
 // @desc    Login route
