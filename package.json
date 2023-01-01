@@ -22,7 +22,7 @@
   "homepage": "https://github.com/shanith32/mern-social-media#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.1.0",
+    "config": "^3.3.8",
     "cookie-parser": "^1.4.4",
     "esm": "^3.2.25",
     "express": "^4.17.1",
